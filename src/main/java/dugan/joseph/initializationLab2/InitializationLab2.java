@@ -1,7 +1,5 @@
 package dugan.joseph.initializationLab2;
 
-import java.util.Random;
-
 /**
  * Created by joseph on 1/25/16.
  */
@@ -40,6 +38,13 @@ class ThingContainer {
         colorfulThings = new ColorfulThing[size];
         this.size = size;
         numOfObjs = 0;
+    }
+
+    public ThingContainer(ColorfulThing[] colorfulThings) {
+        this(colorfulThings.length);
+        for (ColorfulThing thing : colorfulThings) {
+            add(thing);
+        }
     }
 
     public ColorfulThing[] getColorfulThings() {
@@ -126,51 +131,26 @@ public class InitializationLab2 {
 
 
     public static void main(String[] args) {
-        Random random = new Random();
+        ColorfulThing colorfulThing1 = new ColorfulThing(ColorfulThing.Color.BLACK);
+        ColorfulThing colorfulThing2 = new ColorfulThing(ColorfulThing.Color.BLUE);
+        ColorfulThing colorfulThing3 = new ColorfulThing(ColorfulThing.Color.GREEN);
 
-        ThingContainer thingContainer1 = null;
-        ThingContainer thingContainer2 = null;
-        ThingContainer thingContainer3 = null;
+        ThingContainer thingContainerToPass = new ThingContainer(3);
 
-        final int NUM_CONTAINERS = 3;
-        final int CONTAINER_SIZE_LIMIT = 20;
+        thingContainerToPass.add(colorfulThing1);
+        thingContainerToPass.add(colorfulThing2);
+        thingContainerToPass.add(colorfulThing3);
 
-        ThingContainer[] collection = new ThingContainer[NUM_CONTAINERS];
-        collection[0] = thingContainer1;
-        collection[1] = thingContainer2;
-        collection[2] = thingContainer3;
+        System.out.println("ThingContainer to be passed to constructor: ");
+        thingContainerToPass.printThings();
 
-        ThingContainer[] resultContainer = new ThingContainer[NUM_CONTAINERS];
-        int idx = 0;
+        ThingContainer thingContainerFromThingContainerArgConstructor = new ThingContainer(thingContainerToPass.getColorfulThings());
 
-        for (ThingContainer thingContainer: collection) {
-            int size = random.nextInt(CONTAINER_SIZE_LIMIT) + 1;
-            thingContainer = new ThingContainer(size);
-            for (int i = 0; i <= size; i++) {
-                thingContainer.add(new ColorfulThing(ColorfulThing.Color.getRandom()));
-            }
-            thingContainer.printThings();
-            resultContainer[idx] = thingContainer;
-            idx++;
-        }
+        System.out.println("ThingContainer created with ThingContainer arg constructor: ");
+        thingContainerFromThingContainerArgConstructor.printThings();
 
-        final ColorfulThing.Color colorToRemove = ColorfulThing.Color.BLUE;
-        ThingContainer demonstrationCollection = resultContainer[0];
-        ColorfulThing[] thingsArray = demonstrationCollection.getColorfulThings();
-        ColorfulThing thingToRemove = thingsArray[0];
-
-        System.out.println("Thing container before removes: ");
-        demonstrationCollection.printThings();
-
-        ColorfulThing removedThing1 = demonstrationCollection.remove(colorToRemove);
-        ColorfulThing removedThing2 = demonstrationCollection.remove(thingToRemove);
-
-        System.out.println("ColorfulThings removed: ");
-        System.out.println(removedThing1.toString());
-        System.out.println(removedThing2.toString());
-
-        System.out.println("Thing container after removes: ");
-        demonstrationCollection.printThings();
+        System.out.println("ThingContainers are the same objects: " +
+                thingContainerToPass.equals(thingContainerFromThingContainerArgConstructor));
 
 
     }
